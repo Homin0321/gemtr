@@ -3,7 +3,6 @@ import google.generativeai as genai
 import time
 
 COMMAND = "다음 영문을 설명이나 요약을 덧붙이지 말고 그대로 한국어로 번역해줘: "
-SLEEP_TIME = 20
 
 def configure_genai():
     safety = [
@@ -55,9 +54,11 @@ def main():
             model = configure_genai()
             chat = model.start_chat()
             paragraphs = text.split('\n\n')
-            for para in paragraphs:
+            for i, para in enumerate(paragraphs):
                 show_paragraph(chat, para)
-                time.sleep(SLEEP_TIME)
+                if i > 1:
+                    sleep = i if i > 20 else 20
+                    time.sleep(i)
 
 if __name__ == "__main__":
     main()
