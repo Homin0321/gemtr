@@ -42,7 +42,7 @@ def main():
                 st.session_state.auth = True
                 genai.configure(api_key=st.secrets["api_key"])
             st.rerun()
-    else
+    else:
         form = st.form(key="box")
         text = form.text_area("Input English text here")
         submit = form.form_submit_button("Translate into Korean")
