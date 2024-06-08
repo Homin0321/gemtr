@@ -3,7 +3,7 @@ import google.generativeai as genai
 import re
 
 # Constants for better readability and maintainability
-COMMAND = "다음 영문을 한국어로 번역해줘. 제목이나 설명, 요약은 덧붙이지 마. "
+COMMAND = "다음 영문을 한국어로 번역해줘. 제목이나 설명, 요약은 덧붙이지 마."
 PASSWORD = st.secrets["passwd"]  # Store password securely in secrets
 API_KEY = st.secrets["api_key"]  # Store API key securely in secrets
 
@@ -33,16 +33,24 @@ def show(text):
 
 def show_paragraph(text):
     """Displays English text and its Korean translation side-by-side."""
-    col1, col2 = st.columns([1, 1])
-    with col1:
-        text_para = text.split('\n')
-        for para in text_para:
-            show(para)
-    with col2:
-        response = st.session_state.model.generate_content(COMMAND + text)
-        resp_para = response.text.split('\n')
-        for para in resp_para:
-            show(para)
+    #text = text.replace('\n', '\n\n')
+    response = st.session_state.model.generate_content(COMMAND + '\n' + text)
+
+    engs = text.split('\n')
+    kors = response.text.split('\n')
+    if len(engs) == len(kors):
+        for i, eng in enumerate(engs):
+            col1, col2 = st.columns([1, 1])
+            with col1:
+                show(eng)
+            with col2:
+                show(kors[i])
+    else:
+        col1, col2 = st.columns([1, 1])
+        with col1:
+            show(engs)
+        with col2:
+            show(kors)
 
 def main():
     """Main function to run the Streamlit app."""
