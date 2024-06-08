@@ -30,22 +30,27 @@ def show_paragraph(chat, text):
 
 def main():
     st.set_page_config(page_title="Gemini Translator Eng2Kor", page_icon=":closed_book:")
+
     if "auth" not in st.session_state:
         st.session_state.auth = False
 
-    if  st.session_state.auth == False:
+    if not st.session_state.auth:
         form = st.form(key="auth")
-        passwd = form.text_input("Enter Password")
+        passwd = form.text_input("Enter Password", type="password")
         submit = form.form_submit_button("Submit")
         if submit:
             if passwd == st.secrets["passwd"]:
                 st.session_state.auth = True
+                st.success("Authenticated!")
                 genai.configure(api_key=st.secrets["api_key"])
-            st.rerun()
+                st.rerun()
+            else:
+                st.error("Incorrect password. Please try again.")
     else:
         form = st.form(key="box")
         text = form.text_area("Input English text here")
         submit = form.form_submit_button("Translate into Korean")
+
         if submit:
             model = configure_genai()
             chat = model.start_chat()
