@@ -20,11 +20,6 @@ if "model" not in st.session_state:
         ],
     )
 
-def show(text):
-    """Displays text line by line in Streamlit."""
-    for line in text.splitlines():
-        st.write(line)
-
 def show_paragraph(text):
     """Displays English text and its Korean translation side-by-side."""
     response = st.session_state.model.generate_content(COMMAND + text)
@@ -34,7 +29,13 @@ def show_paragraph(text):
     # Handle cases where paragraph counts don't match
     if len(text_para) != len(resp_para):
         st.warning("The translation might be misaligned due to paragraph structure differences.")
-        show(response.text)
+        col1, col2 = st.columns([1, 1])
+        with col1:
+            for para in text_para:
+                st.write(para)
+        with col2:
+            for para in resp_para:
+                st.write(para)
         return
 
     for i, para in enumerate(text_para):
