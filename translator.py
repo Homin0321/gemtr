@@ -35,7 +35,7 @@ def main():
         st.session_state.auth = False
 
     if not st.session_state.auth:
-        form = st.form(key="auth")
+        form = st.form(key="passwd")
         passwd = form.text_input("Enter Password", type="password")
         submit = form.form_submit_button("Submit")
         if submit:
