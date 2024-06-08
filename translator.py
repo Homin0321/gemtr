@@ -37,7 +37,7 @@ def main():
         passwd = form.text_input("Enter Password")
         submit = form.form_submit_button("Submit")
         if submit:
-            if passwd == st.secrets["passwd"]
+            if passwd == st.secrets["passwd"]:
                 st.session_state.auth = "OK"
             st.rerun()
 
