@@ -31,6 +31,10 @@ def show_paragraph(chat, text):
         response = chat.send_message(COMMAND + text)
         show(response.text)
 
+def get_length(text):
+  length = len(text) - text.count(' ') - text.count('\n')
+  return length if length > 1 else 0
+
 def main():
     st.set_page_config(page_title="Gemini Translator Eng2Kor", page_icon=":closed_book:")
 
@@ -59,10 +63,11 @@ def main():
             chat = model.start_chat()
             paragraphs = text.split('\n\n')
             for i, para in enumerate(paragraphs):
-                show_paragraph(chat, para)
-                if i > 1:
-                    sleep = i if i > 10 else 20
-                    time.sleep(sleep)
+                if get_length(para):
+                    show_paragraph(chat, para)
+                    if i > 1:
+                        sleep = i if i > 10 else 20
+                        time.sleep(sleep)
 
 if __name__ == "__main__":
     main()
