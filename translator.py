@@ -46,11 +46,15 @@ def show_paragraph(text):
             with col2:
                 show(kors[i])
     else:
+        print(len(engs))
+        print(len(kors))
         col1, col2 = st.columns([1, 1])
         with col1:
-            show(engs)
+            for eng in engs:
+                show(eng)
         with col2:
-            show(kors)
+            for kor in kors:
+                show(kor)
 
 def main():
     """Main function to run the Streamlit app."""
