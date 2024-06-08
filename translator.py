@@ -18,14 +18,18 @@ def configure_genai():
     )
     return model
 
+def show(text):
+    contents = text.split('\n')
+    for con in contents:
+        st.write(con)
 
 def show_paragraph(chat, text):
     col1, col2 = st.columns([1, 1])
     with col1:
-        st.write(text)
+        show(text)
     with col2:
         response = chat.send_message(COMMAND + text)
-        st.write(response.text)
+        show(response.text)
 
 def main():
     st.set_page_config(page_title="Gemini Translator Eng2Kor", page_icon=":closed_book:")
@@ -57,8 +61,8 @@ def main():
             for i, para in enumerate(paragraphs):
                 show_paragraph(chat, para)
                 if i > 1:
-                    sleep = i if i > 20 else 20
-                    time.sleep(i)
+                    sleep = i if i > 10 else 20
+                    time.sleep(sleep)
 
 if __name__ == "__main__":
     main()
