@@ -1,8 +1,9 @@
 import streamlit as st
 import google.generativeai as genai
+import re
 
 # Constants for better readability and maintainability
-COMMAND = "다음 영문을 설명이나 요약을 덧붙이지 말고 그대로 한국어로 번역해줘: "
+COMMAND = "다음 영문을 한국어로 번역해줘. 제목이나 설명, 요약은 덧붙이지 마. "
 PASSWORD = st.secrets["passwd"]  # Store password securely in secrets
 API_KEY = st.secrets["api_key"]  # Store API key securely in secrets
 
@@ -20,30 +21,28 @@ if "model" not in st.session_state:
         ],
     )
 
+def show(text):
+    # Remove headings
+    text = re.sub(r"#{1,6} ", "", text)
+
+    # Remove bold and italic formatting
+    text = re.sub(r"\*\*|__", "", text)
+    text = re.sub(r"\*|_", "", text)
+
+    st.write(text)
+
 def show_paragraph(text):
     """Displays English text and its Korean translation side-by-side."""
-    response = st.session_state.model.generate_content(COMMAND + text)
-    text_para = text.split('\n\n')
-    resp_para = response.text.split('\n\n')
-
-    # Handle cases where paragraph counts don't match
-    if len(text_para) != len(resp_para):
-        st.warning("The translation might be misaligned due to paragraph structure differences.")
-        col1, col2 = st.columns([1, 1])
-        with col1:
-            for para in text_para:
-                st.write(para)
-        with col2:
-            for para in resp_para:
-                st.write(para)
-        return
-
-    for i, para in enumerate(text_para):
-        col1, col2 = st.columns([1, 1])
-        with col1:
-            st.write(para)
-        with col2:
-            st.write(resp_para[i])
+    col1, col2 = st.columns([1, 1])
+    with col1:
+        text_para = text.split('\n')
+        for para in text_para:
+            show(para)
+    with col2:
+        response = st.session_state.model.generate_content(COMMAND + text)
+        resp_para = response.text.split('\n')
+        for para in resp_para:
+            show(para)
 
 def main():
     """Main function to run the Streamlit app."""
