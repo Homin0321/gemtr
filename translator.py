@@ -8,11 +8,12 @@ PASSWORD = st.secrets["passwd"]  # Store password securely in secrets
 API_KEY = st.secrets["api_key"]  # Store API key securely in secrets
 
 # Configure Gemini only once
-if "model" not in st.session_state:
+@st.cache_resource 
+def configure_genai(temperature):
     genai.configure(api_key=API_KEY)
-    st.session_state.model = genai.GenerativeModel(
+    return genai.GenerativeModel(
         "gemini-1.5-pro-latest",
-        generation_config=genai.types.GenerationConfig(temperature=0.5),
+        generation_config=genai.types.GenerationConfig(temperature=temperature),
         safety_settings=[
             {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE"},
             {"category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE"},
@@ -22,19 +23,13 @@ if "model" not in st.session_state:
     )
 
 def show(text):
-    # Remove headings
-    text = re.sub(r"#{1,6} ", "", text)
-
-    # Remove bold and italic formatting
-    text = re.sub(r"\*\*|__", "", text)
-    text = re.sub(r"\*|_", "", text)
-
+    """Removes markdown formatting from text and displays it."""
+    text = re.sub(r"#{1,6} |(\*\*|__)|\*|_", "", text)
     st.write(text)
 
-def show_paragraph(text):
+def show_paragraph(model, text):
     """Displays English text and its Korean translation side-by-side."""
-    #text = text.replace('\n', '\n\n')
-    response = st.session_state.model.generate_content(COMMAND + text)
+    response = model.generate_content(COMMAND + text)
 
     engs = text.split('\n')
     kors = response.text.split('\n')
@@ -78,10 +73,13 @@ def main():
         col1, col2 = st.columns([1, 1])
         with col1:
             text = st.text_area("Input English text here")
+            temperature = st.slider("Temperature", 0.0, 1.0, 0.5)
 
         if st.button("Translate"):
+            model = configure_genai(temperature)
+
             if text:
-                show_paragraph(text)
+                show_paragraph(model, text)
             else:
                 st.warning("Please input some text.")
 
