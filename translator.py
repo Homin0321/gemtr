@@ -3,7 +3,7 @@ import google.generativeai as genai
 import re
 
 # Constants for better readability and maintainability
-COMMAND = "다음 영문을 한국어로 번역해줘. 제목이나 설명, 요약은 덧붙이지 마."
+COMMAND = "다음 영문을 한국어로 번역해줘. 문장 번역 외에 제목이나 설명, 요약은 하지 말고: \n"
 PASSWORD = st.secrets["passwd"]  # Store password securely in secrets
 API_KEY = st.secrets["api_key"]  # Store API key securely in secrets
 
@@ -12,7 +12,7 @@ if "model" not in st.session_state:
     genai.configure(api_key=API_KEY)
     st.session_state.model = genai.GenerativeModel(
         "gemini-1.5-pro-latest",
-        generation_config=genai.types.GenerationConfig(temperature=1),
+        generation_config=genai.types.GenerationConfig(temperature=0.5),
         safety_settings=[
             {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE"},
             {"category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE"},
@@ -34,27 +34,21 @@ def show(text):
 def show_paragraph(text):
     """Displays English text and its Korean translation side-by-side."""
     #text = text.replace('\n', '\n\n')
-    response = st.session_state.model.generate_content(COMMAND + '\n' + text)
+    response = st.session_state.model.generate_content(COMMAND + text)
 
     engs = text.split('\n')
     kors = response.text.split('\n')
-    if len(engs) == len(kors):
-        for i, eng in enumerate(engs):
-            col1, col2 = st.columns([1, 1])
-            with col1:
-                show(eng)
-            with col2:
-                show(kors[i])
-    else:
-        print(len(engs))
-        print(len(kors))
+    len_eng = len(engs)
+    len_kor = len(kors)
+    length = max(len_eng, len_kor)
+    for i in range(length):
         col1, col2 = st.columns([1, 1])
         with col1:
-            for eng in engs:
-                show(eng)
+            if i < len_eng:
+                show(engs[i])
         with col2:
-            for kor in kors:
-                show(kor)
+            if i < len_kor:
+                show(kors[i])
 
 def main():
     """Main function to run the Streamlit app."""
