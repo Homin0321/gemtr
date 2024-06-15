@@ -1,56 +1,66 @@
-# GemTr: An English-to-Korean Translation App using Google Gemini
+# Gemini Translator
 
-This Streamlit application leverages the power of Google's Gemini Pro model to provide accurate and efficient English-to-Korean translations. 
+This is a simple Streamlit web application that leverages Google's Gemini Pro model for English-Korean and Korean-English translation.
 
 ## Features
 
-- **Paragraph Translation:** Translate entire paragraphs of English text into Korean.
-- **Side-by-Side Display:** View the original English text and its Korean translation conveniently arranged side-by-side.
-- **Temperature Control:** Adjust the "temperature" parameter to control the creativity and randomness of the translation.
-- **Password Protection:** Secure your application with password authentication to restrict access.
-- **Streamlit Interface:** Enjoy a user-friendly and interactive translation experience within your web browser.
+- **English to Korean Translation:** Input English text and get a Korean translation.
+- **Korean to English Translation:** Input Korean text and get an English translation.
+- **Side-by-Side Display:** View both the original and translated text in a clear, side-by-side format.
+- **Password Protection:** Secure your application with password authentication.
+- **Streamlit Framework:** Built using Streamlit for an interactive and user-friendly experience.
 
-## Installation and Setup
+## Requirements
 
-1. **Prerequisites:** Ensure you have Python and pip installed on your system.
-2. **Install Dependencies:** Install the required libraries using the following command:
+- Python 3.7 or higher
+- Streamlit (`pip install streamlit`)
+- Google `generativeai` library (`pip install google-generativeai`)
+
+## Setup
+
+1. **Clone the repository:**
    ```bash
-   pip install streamlit google-generativeai
+   git clone https://github.com/your-username/gemtranslator.git
+   cd gemtranslator
    ```
-3. **Obtain API Key:**
-   - Sign up for a Google Cloud Platform account and create a project.
-   - Enable the "Gemini API" for your project.
-   - Create an API key and store it securely.
-4. **Store Credentials:**
-   - Create a `secrets.toml` file in the same directory as your Python script.
-   - Add your API key and desired password to the `secrets.toml` file in the following format:
-     ```toml
-     api_key = "YOUR_API_KEY_HERE"
-     passwd = "YOUR_PASSWORD_HERE"
-     ```
-5. **Run the App:** Execute the following command in your terminal to launch the Streamlit app:
+
+2. **Install dependencies:**
    ```bash
-   streamlit run translator.py
+   pip install -r requirements.txt
+   ```
+
+3. **Set up your secrets:**
+   - Create a `secrets.toml` file in your application directory.
+   - Add your Google Gemini API key and a password for authentication:
+     ```toml
+     api_key = "YOUR_GEMINI_API_KEY"
+     passwd = "YOUR_PASSWORD"
+     ```
+
+4. **Run the app:**
+   ```bash
+   streamlit run app.py
    ```
 
 ## Usage
 
-1. **Authentication:** Upon launching the app, you'll be prompted to enter the password you set in the `secrets.toml` file.
-2. **Input Text:** Enter the English text you want to translate into the provided text area.
-3. **Adjust Temperature (Optional):** Use the slider to modify the temperature parameter. Higher values (closer to 1.0) result in more creative and less predictable translations.
-4. **Translate:** Click the "Translate" button to initiate the translation process.
-5. **View Translation:** The translated Korean text will be displayed alongside the original English text.
+1. **Access the app:** Open your web browser and navigate to the address displayed in your terminal after running the app (usually `http://localhost:8501`).
+
+2. **Authenticate:** Enter the password you set in the `secrets.toml` file.
+
+3. **Translate:**
+   - Paste or type your English or Korean text into the corresponding text area.
+   - Click the "Translate" button below the text area.
+   - The translated text will appear in the opposite text area, and both texts will be displayed side-by-side for easy comparison.
 
 ## Notes
 
-- The application utilizes the `gemini-1.5-pro-latest` model for translation.
-- Ensure that you have an active internet connection for the app to function correctly.
-- The quality of the translation may vary depending on the complexity and clarity of the input text.
+- The translation quality may vary depending on the complexity and length of the text.
+- This application is for demonstration purposes and can be further customized and enhanced.
+- Ensure that you have a valid Google Gemini API key and have enabled the Gemini API in your Google Cloud Platform project.
+- **Remember to replace the placeholders in the `secrets.toml` file with your actual API key and password.** 
 
-## Disclaimer
+## Contributing
 
-This application is provided as-is and is intended for educational and demonstration purposes only. The developers are not responsible for any consequences arising from its use.
+Contributions are welcome! If you find any issues or have suggestions for improvements, please feel free to open an issue or submit a pull request.
 
-## License
-
-This project is licensed under the MIT License.
