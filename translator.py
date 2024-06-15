@@ -70,7 +70,7 @@ def main():
             if st.button("Authenticate"):
                 if password_input == PASSWORD:
                     st.session_state.authenticated = True
-                    st.experimental_rerun()
+                    st.rerun()
                 else:
                     st.error("Incorrect password. Please try again.")
     else:
