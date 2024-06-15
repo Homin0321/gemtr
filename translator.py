@@ -84,7 +84,6 @@ def main():
 
         # English to Korean Form
         with col1:
-            st.subheader("English to Korean")
             with st.form(key="eng_to_kor_form"):
                 eng_text = st.text_area("Input English text here", value=st.session_state.get("eng_text", ""))
                 submit_eng_to_kor = st.form_submit_button("Translate into Korean")
@@ -97,7 +96,6 @@ def main():
 
         # Korean to English Form
         with col2:
-            st.subheader("Korean to English")
             with st.form(key="kor_to_eng_form"):
                 kor_text = st.text_area("Input Korean text here", value=st.session_state.get("kor_text", ""))
                 submit_kor_to_eng = st.form_submit_button("Translate into English")
