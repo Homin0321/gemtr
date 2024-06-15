@@ -91,6 +91,7 @@ def main():
                 if submit_eng_to_kor:
                     if eng_text:
                         st.session_state.kor_text = translate(model, eng_text, COMMAND_ENG_TO_KOR)
+                        st.session_state.eng_text = eng_text
                     else:
                         st.warning("Please input some text.")
 
@@ -103,6 +104,7 @@ def main():
                 if submit_kor_to_eng:
                     if kor_text:
                         st.session_state.eng_text = translate(model, kor_text, COMMAND_KOR_TO_ENG)
+                        st.session_state.kor_text = kor_text
                     else:
                         st.warning("Please input some text.")
 
